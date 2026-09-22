@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BizFlow — Business Operations Management Platform</title>
+<meta name="description" content="BizFlow is a business operations dashboard for managing customers, sales, invoices, expenses and performance in one place." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22><rect width=%2224%22 height=%2224%22 rx=%226%22 fill=%22%231F6F5C%22/><path d=%22M6 15l4-5 3 3 5-7%22 stroke=%22white%22 stroke-width=%222%22 fill=%22none%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/></svg>">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<div class="app-shell">
+  <!-- ========== SIDEBAR ========== -->
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="#1F6F5C"/>
+        <path d="M8 20l5-6.5 4 4 7-9" stroke="white" stroke-width="2.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="brand-name">Biz<span>Flow</span></span>
+      <button class="icon-btn sidebar-close" id="sidebarClose" aria-label="Close menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <div class="nav-group-label">Overview</div>
+    <ul class="nav-list">
+      <li><a href="#dashboard" class="nav-link active" data-page="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        Dashboard
+      </a></li>
+    </ul>
+
+    <div class="nav-group-label">Operations</div>
+    <ul class="nav-list">
+      <li><a href="#customers" class="nav-link" data-page="customers">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke-linecap="round"/><circle cx="17.5" cy="8.5" r="2.4"/><path d="M15.5 14.2c2.6.3 4.5 2.6 4.5 5.3" stroke-linecap="round"/></svg>
+        Customers
+      </a></li>
+      <li><a href="#sales" class="nav-link" data-page="sales">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l4-5 4 3 6-8 4 4" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 20h18" stroke-linecap="round"/></svg>
+        Sales
+      </a></li>
+      <li><a href="#invoices" class="nav-link" data-page="invoices">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3h10a1 1 0 0 1 1 1v16l-3-2-2.5 2-2.5-2-2.5 2-2.5-2-1 .7V4a1 1 0 0 1 1-1z"/><path d="M9 8h6M9 12h6M9 16h3" stroke-linecap="round"/></svg>
+        Invoices
+      </a></li>
+      <li><a href="#expenses" class="nav-link" data-page="expenses">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18" /><circle cx="7" cy="14.5" r="1" fill="currentColor" stroke="none"/></svg>
+        Expenses
+      </a></li>
+      <li><a href="#analytics" class="nav-link" data-page="analytics">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M11 20V4M18 20v-7" stroke-linecap="round"/></svg>
+        Analytics
+      </a></li>
+    </ul>
+
+    <div class="nav-group-label">Account</div>
+    <ul class="nav-list">
+      <li><a href="#settings" class="nav-link" data-page="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 13.5a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V19.6a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1.1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.55-1.1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1z"/></svg>
+        Settings
+      </a></li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <div class="user-avatar" id="userAvatar">A</div>
+        <div class="user-meta">
+          <div class="user-name" id="sidebarUserName">Alex Morgan</div>
+          <div class="user-role">Business Owner</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ========== MAIN ========== -->
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle icon-btn" id="menuToggle" aria-label="Open menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18" stroke-linecap="round"/></svg>
+        </button>
+        <h2 class="page-title" id="pageTitle">Dashboard</h2>
+      </div>
+      <div class="topbar-right">
+        <label class="search-field" for="globalSearch">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></svg>
+          <input type="text" id="globalSearch" placeholder="Search this page…" aria-label="Search" />
+        </label>
+        <button class="icon-btn" id="themeToggle" aria-label="Toggle dark mode" aria-pressed="false">
+          <svg id="themeIconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19v2.4M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M2.5 12h2.4M19 12h2.4M4.9 19l1.7-1.7M17.4 6.6l1.7-1.7" stroke-linecap="round"/></svg>
+          <svg id="themeIconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
+        </button>
+        <button class="icon-btn" id="notifToggle" aria-label="Notifications" aria-haspopup="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.7 21a2 2 0 0 1-3.4 0" stroke-linecap="round"/></svg>
+          <span class="dot" id="notifDot"></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Notification panel -->
+    <div class="notif-panel" id="notifPanel">
+      <div class="notif-panel-head">
+        <h4>Notifications</h4>
+        <button class="btn btn-ghost btn-sm" id="markAllRead">Mark all read</button>
+      </div>
+      <ul class="notif-list" id="notifList"></ul>
+    </div>
+
+    <main class="content">
+
+      <!-- ============ DASHBOARD ============ -->
+      <section class="page active" id="page-dashboard">
+        <div class="page-header">
+          <div>
+            <h1 id="dashGreeting">Good morning, Alex 👋</h1>
+            <p class="subtitle">Here's what's happening with your business today.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-secondary" data-open-modal="expenseModal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>Add Expense</button>
+            <button class="btn btn-primary" data-open-modal="saleModal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>New Sale</button>
+          </div>
+        </div>
+
+        <div class="kpi-grid" id="kpiGrid"></div>
+
+        <div class="two-col">
+          <div class="panel">
+            <h3 class="section-title">Revenue overview</h3>
+            <p class="section-sub">Monthly revenue for the current year</p>
+            <div class="chart-wrap"><canvas id="revenueChart"></canvas></div>
+          </div>
+          <div class="panel">
+            <h3 class="section-title">Outstanding invoices</h3>
+            <p class="section-sub">Invoices that need attention</p>
+            <ul id="outstandingList"></ul>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3 class="section-title">Quick actions</h3>
+          <p class="section-sub">Jump straight into common tasks</p>
+          <div class="quick-actions">
+            <button class="quick-action" data-open-modal="saleModal">
+              <span class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l4-5 4 3 6-8 4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span>New Sale</span>
+            </button>
+            <button class="quick-action" data-open-modal="invoiceModal">
+              <span class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3h10a1 1 0 0 1 1 1v16l-3-2-2.5 2-2.5-2-2.5 2-2.5-2-1 .7V4a1 1 0 0 1 1-1z"/></svg></span>
+              <span>Create Invoice</span>
+            </button>
+            <button class="quick-action" data-open-modal="customerModal">
+              <span class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke-linecap="round"/></svg></span>
+              <span>Add Customer</span>
+            </button>
+            <button class="quick-action" data-open-modal="expenseModal">
+              <span class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg></span>
+              <span>Add Expense</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3 class="section-title">Recent transactions</h3>
+          <p class="section-sub">The latest activity across your business</p>
+          <div class="table-scroll">
+            <table class="data-table" id="recentTxTable">
+              <thead><tr><th>Customer</th><th>Transaction</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ CUSTOMERS ============ -->
+      <section class="page" id="page-customers">
+        <div class="page-header">
+          <div>
+            <h1>Customers</h1>
+            <p class="subtitle">Manage the people and companies you do business with.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-primary" data-open-modal="customerModal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>Add Customer</button>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <label class="search-field" for="customerSearch">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></svg>
+            <input type="text" id="customerSearch" placeholder="Search customers…" />
+          </label>
+          <select class="filter-select" id="customerStatusFilter">
+            <option value="all">All statuses</option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+          <div class="toolbar-spacer"></div>
+        </div>
+
+        <div class="panel">
+          <div class="table-scroll">
+            <table class="data-table" id="customersTable">
+              <thead><tr><th>Customer</th><th>Email</th><th>Phone</th><th>Total purchases</th><th>Last activity</th><th>Status</th><th></th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="empty-state" id="customersEmpty" style="display:none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
+            <h3>No customers found</h3>
+            <p>Try another search term or add a new customer.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SALES ============ -->
+      <section class="page" id="page-sales">
+        <div class="page-header">
+          <div>
+            <h1>Sales</h1>
+            <p class="subtitle">Track every sale and keep an eye on performance.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-primary" data-open-modal="saleModal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>New Sale</button>
+          </div>
+        </div>
+
+        <div class="kpi-grid" id="salesKpiGrid"></div>
+
+        <div class="toolbar">
+          <label class="search-field" for="salesSearch">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></svg>
+            <input type="text" id="salesSearch" placeholder="Search sales…" />
+          </label>
+          <select class="filter-select" id="salesStatusFilter">
+            <option value="all">All statuses</option>
+            <option value="Paid">Paid</option>
+            <option value="Pending">Pending</option>
+            <option value="Overdue">Overdue</option>
+          </select>
+          <div class="toolbar-spacer"></div>
+        </div>
+
+        <div class="panel">
+          <div class="table-scroll">
+            <table class="data-table" id="salesTable">
+              <thead><tr><th>Sale ID</th><th>Customer</th><th>Product / service</th><th>Date</th><th>Amount</th><th>Status</th><th></th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="empty-state" id="salesEmpty" style="display:none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12l4-5 4 3 6-8 4 4"/></svg>
+            <h3>No sales found</h3>
+            <p>Try another search term, or record a new sale.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ INVOICES ============ -->
+      <section class="page" id="page-invoices">
+        <div class="page-header">
+          <div>
+            <h1>Invoices</h1>
+            <p class="subtitle">Create, send and track invoices for your customers.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-primary" data-open-modal="invoiceModal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>Create Invoice</button>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <label class="search-field" for="invoiceSearch">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></svg>
+            <input type="text" id="invoiceSearch" placeholder="Search invoices…" />
+          </label>
+          <select class="filter-select" id="invoiceStatusFilter">
+            <option value="all">All statuses</option>
+            <option value="Paid">Paid</option>
+            <option value="Pending">Pending</option>
+            <option value="Overdue">Overdue</option>
+          </select>
+          <div class="toolbar-spacer"></div>
+        </div>
+
+        <div class="panel">
+          <div class="table-scroll">
+            <table class="data-table" id="invoicesTable">
+              <thead><tr><th>Invoice #</th><th>Customer</th><th>Issue date</th><th>Due date</th><th>Amount</th><th>Status</th><th></th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="empty-state" id="invoicesEmpty" style="display:none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 3h10a1 1 0 0 1 1 1v16l-3-2-2.5 2-2.5-2-2.5 2-2.5-2-1 .7V4a1 1 0 0 1 1-1z"/></svg>
+            <h3>No invoices found</h3>
+            <p>Try another search term, or create a new invoice.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ EXPENSES ============ -->
+      <section class="page" id="page-expenses">
+        <div class="page-header">
+          <div>
+            <h1>Expenses</h1>
+            <p class="subtitle">Keep track of where your business spends money.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-primary" data-open-modal="expenseModal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>Add Expense</button>
+          </div>
+        </div>
+
+        <div class="kpi-grid" id="expenseKpiGrid"></div>
+
+        <div class="toolbar">
+          <label class="search-field" for="expenseSearch">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></svg>
+            <input type="text" id="expenseSearch" placeholder="Search expenses…" />
+          </label>
+          <select class="filter-select" id="expenseCategoryFilter">
+            <option value="all">All categories</option>
+          </select>
+          <div class="toolbar-spacer"></div>
+        </div>
+
+        <div class="panel">
+          <div class="table-scroll">
+            <table class="data-table" id="expensesTable">
+              <thead><tr><th>Description</th><th>Category</th><th>Date</th><th>Payment method</th><th>Amount</th><th></th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="empty-state" id="expensesEmpty" style="display:none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="13" rx="2"/></svg>
+            <h3>No expenses found</h3>
+            <p>Try another search term, or add a new expense.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ ANALYTICS ============ -->
+      <section class="page" id="page-analytics">
+        <div class="page-header">
+          <div>
+            <h1>Analytics</h1>
+            <p class="subtitle">A closer look at how your business is performing.</p>
+          </div>
+        </div>
+
+        <div class="analytics-grid">
+          <div class="panel">
+            <h3 class="section-title">Revenue by month</h3>
+            <p class="section-sub">Trailing 12 months</p>
+            <div class="chart-wrap"><canvas id="analyticsRevenueChart"></canvas></div>
+          </div>
+          <div class="panel">
+            <h3 class="section-title">Expenses by category</h3>
+            <p class="section-sub">Share of total spend</p>
+            <div class="chart-wrap" style="height:220px"><canvas id="expenseCategoryChart"></canvas></div>
+            <div class="legend-list" id="expenseLegend"></div>
+          </div>
+        </div>
+
+        <div class="analytics-grid">
+          <div class="panel">
+            <h3 class="section-title">Sales performance</h3>
+            <p class="section-sub">Key figures across recorded sales</p>
+            <div class="summary-list" id="salesPerformanceList"></div>
+          </div>
+          <div class="panel">
+            <h3 class="section-title">Business summary</h3>
+            <p class="section-sub">Revenue, expenses and estimated profit</p>
+            <div class="summary-list" id="businessSummaryList"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SETTINGS ============ -->
+      <section class="page" id="page-settings">
+        <div class="page-header">
+          <div>
+            <h1>Settings</h1>
+            <p class="subtitle">Manage your business profile and preferences.</p>
+          </div>
+        </div>
+
+        <div class="settings-grid">
+          <div class="panel">
+            <h3 class="section-title">Business profile</h3>
+            <p class="section-sub">Shown on invoices and throughout BizFlow</p>
+            <form id="businessProfileForm" novalidate>
+              <div class="field-group">
+                <label for="bizName">Business name</label>
+                <input type="text" id="bizName" required />
+                <div class="field-error">Business name is required.</div>
+              </div>
+              <div class="field-group">
+                <label for="bizEmail">Email</label>
+                <input type="email" id="bizEmail" required />
+                <div class="field-error">Enter a valid email address.</div>
+              </div>
+              <div class="field-row">
+                <div class="field-group">
+                  <label for="bizPhone">Phone</label>
+                  <input type="tel" id="bizPhone" />
+                </div>
+                <div class="field-group">
+                  <label for="bizCurrency">Currency</label>
+                  <select id="bizCurrency">
+                    <option value="$">USD ($)</option>
+                    <option value="€">EUR (€)</option>
+                    <option value="£">GBP (£)</option>
+                    <option value="₹">INR (₹)</option>
+                    <option value="৳">BDT (৳)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field-group">
+                <label for="bizAddress">Address</label>
+                <textarea id="bizAddress" rows="2"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">Save profile</button>
+            </form>
+          </div>
+
+          <div>
+            <div class="panel">
+              <h3 class="section-title">Preferences</h3>
+              <p class="section-sub">Personalize how BizFlow looks and notifies you</p>
+              <div class="field-group">
+                <label for="themeSelect">Theme</label>
+                <select id="themeSelect">
+                  <option value="light">Light</option>
+                  <option value="dark">Dark</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <label for="notifPref">Notification preferences</label>
+                <select id="notifPref">
+                  <option value="all">All activity</option>
+                  <option value="important">Important only</option>
+                  <option value="none">None</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 class="section-title">Data</h3>
+              <p class="section-sub">This is a frontend prototype — all data lives in your browser</p>
+              <div class="danger-zone">
+                <h4>Reset demo data</h4>
+                <p>This restores customers, sales, invoices and expenses to the original sample data. This action cannot be undone.</p>
+                <button class="btn btn-danger" id="resetDataBtn">Reset demo data</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ================= MODALS ================= -->
+
+<!-- Customer Modal -->
+<div class="modal-overlay" id="customerModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="customerModalTitle">
+    <div class="modal-head">
+      <h3 id="customerModalTitle">Add customer</h3>
+      <button class="modal-close" data-close-modal><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/></svg></button>
+    </div>
+    <form id="customerForm" novalidate>
+      <div class="modal-body">
+        <input type="hidden" id="customerId" />
+        <div class="form-grid">
+          <div class="field-group span-2">
+            <label for="customerName">Full name</label>
+            <input type="text" id="customerName" required />
+            <div class="field-error">Enter the customer's name.</div>
+          </div>
+          <div class="field-group span-2">
+            <label for="customerCompany">Company</label>
+            <input type="text" id="customerCompany" />
+          </div>
+          <div class="field-group">
+            <label for="customerEmail">Email</label>
+            <input type="email" id="customerEmail" required />
+            <div class="field-error">Enter a valid email address.</div>
+          </div>
+          <div class="field-group">
+            <label for="customerPhone">Phone</label>
+            <input type="tel" id="customerPhone" required />
+            <div class="field-error">Enter a phone number.</div>
+          </div>
+          <div class="field-group">
+            <label for="customerStatus">Status</label>
+            <select id="customerStatus">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-secondary" data-close-modal>Cancel</button>
+        <button type="submit" class="btn btn-primary">Save customer</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Sale Modal -->
+<div class="modal-overlay" id="saleModal">
+  <div class="modal modal-wide" role="dialog" aria-modal="true" aria-labelledby="saleModalTitle">
+    <div class="modal-head">
+      <h3 id="saleModalTitle">New sale</h3>
+      <button class="modal-close" data-close-modal><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/></svg></button>
+    </div>
+    <form id="saleForm" novalidate>
+      <div class="modal-body">
+        <input type="hidden" id="saleId" />
+        <div class="form-grid">
+          <div class="field-group span-2">
+            <label for="saleCustomer">Customer</label>
+            <select id="saleCustomer" required></select>
+            <div class="field-error">Choose a customer.</div>
+          </div>
+          <div class="field-group span-2">
+            <label for="saleProduct">Product / service</label>
+            <select id="saleProduct" required>
+              <option value="">Select…</option>
+              <option>Web Development</option>
+              <option>UI/UX Design</option>
+              <option>Branding Package</option>
+              <option>Maintenance Plan</option>
+              <option>Digital Marketing</option>
+            </select>
+            <div class="field-error">Choose a product or service.</div>
+          </div>
+          <div class="field-group">
+            <label for="saleQty">Quantity</label>
+            <input type="number" id="saleQty" min="1" step="1" value="1" required />
+            <div class="field-error">Enter a valid quantity.</div>
+          </div>
+          <div class="field-group">
+            <label for="saleUnitPrice">Unit price</label>
+            <input type="number" id="saleUnitPrice" min="0" step="0.01" required />
+            <div class="field-error">Enter a valid unit price.</div>
+          </div>
+          <div class="field-group">
+            <label for="saleDiscount">Discount (%)</label>
+            <input type="number" id="saleDiscount" min="0" max="100" step="1" value="0" />
+          </div>
+          <div class="field-group">
+            <label for="saleTax">Tax (%)</label>
+            <input type="number" id="saleTax" min="0" max="100" step="1" value="0" />
+          </div>
+          <div class="field-group">
+            <label for="saleDate">Date</label>
+            <input type="date" id="saleDate" required />
+          </div>
+          <div class="field-group">
+            <label for="saleStatus">Payment status</label>
+            <select id="saleStatus">
+              <option value="Paid">Paid</option>
+              <option value="Pending">Pending</option>
+              <option value="Overdue">Overdue</option>
+            </select>
+          </div>
+          <div class="field-group span-2">
+            <div class="calc-summary">
+              <div class="calc-row"><span>Subtotal</span><span id="saleCalcSubtotal">$0.00</span></div>
+              <div class="calc-row"><span>Discount</span><span id="saleCalcDiscount">-$0.00</span></div>
+              <div class="calc-row"><span>Tax</span><span id="saleCalcTax">+$0.00</span></div>
+              <div class="calc-row total"><span>Total</span><span id="saleCalcTotal">$0.00</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-secondary" data-close-modal>Cancel</button>
+        <button type="submit" class="btn btn-primary">Save sale</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Invoice Modal -->
+<div class="modal-overlay" id="invoiceModal">
+  <div class="modal modal-wide" role="dialog" aria-modal="true" aria-labelledby="invoiceModalTitle">
+    <div class="modal-head">
+      <h3 id="invoiceModalTitle">Create invoice</h3>
+      <button class="modal-close" data-close-modal><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/></svg></button>
+    </div>
+    <form id="invoiceForm" novalidate>
+      <div class="modal-body">
+        <input type="hidden" id="invoiceId" />
+        <div class="form-grid">
+          <div class="field-group span-2">
+            <label for="invoiceCustomer">Customer</label>
+            <select id="invoiceCustomer" required></select>
+            <div class="field-error">Choose a customer.</div>
+          </div>
+          <div class="field-group">
+            <label for="invoiceItemDesc">Item description</label>
+            <input type="text" id="invoiceItemDesc" required placeholder="e.g. Website redesign" />
+            <div class="field-error">Describe the item.</div>
+          </div>
+          <div class="field-group">
+            <label for="invoiceItemQty">Quantity</label>
+            <input type="number" id="invoiceItemQty" min="1" step="1" value="1" required />
+          </div>
+          <div class="field-group">
+            <label for="invoiceItemPrice">Price</label>
+            <input type="number" id="invoiceItemPrice" min="0" step="0.01" required />
+            <div class="field-error">Enter a valid price.</div>
+          </div>
+          <div class="field-group">
+            <label for="invoiceTax">Tax (%)</label>
+            <input type="number" id="invoiceTax" min="0" max="100" step="1" value="0" />
+          </div>
+          <div class="field-group">
+            <label for="invoiceIssueDate">Issue date</label>
+            <input type="date" id="invoiceIssueDate" required />
+          </div>
+          <div class="field-group">
+            <label for="invoiceDueDate">Due date</label>
+            <input type="date" id="invoiceDueDate" required />
+            <div class="field-error">Due date must be after the issue date.</div>
+          </div>
+          <div class="field-group span-2">
+            <label for="invoiceStatus">Status</label>
+            <select id="invoiceStatus">
+              <option value="Pending">Pending</option>
+              <option value="Paid">Paid</option>
+              <option value="Overdue">Overdue</option>
+            </select>
+          </div>
+          <div class="field-group span-2">
+            <div class="calc-summary">
+              <div class="calc-row"><span>Subtotal</span><span id="invoiceCalcSubtotal">$0.00</span></div>
+              <div class="calc-row"><span>Tax</span><span id="invoiceCalcTax">+$0.00</span></div>
+              <div class="calc-row total"><span>Total</span><span id="invoiceCalcTotal">$0.00</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-secondary" data-close-modal>Cancel</button>
+        <button type="submit" class="btn btn-primary">Save invoice</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Expense Modal -->
+<div class="modal-overlay" id="expenseModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="expenseModalTitle">
+    <div class="modal-head">
+      <h3 id="expenseModalTitle">Add expense</h3>
+      <button class="modal-close" data-close-modal><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/></svg></button>
+    </div>
+    <form id="expenseForm" novalidate>
+      <div class="modal-body">
+        <input type="hidden" id="expenseId" />
+        <div class="form-grid">
+          <div class="field-group span-2">
+            <label for="expenseDesc">Description</label>
+            <input type="text" id="expenseDesc" required />
+            <div class="field-error">Enter a description.</div>
+          </div>
+          <div class="field-group">
+            <label for="expenseCategory">Category</label>
+            <select id="expenseCategory">
+              <option>Office</option>
+              <option>Marketing</option>
+              <option>Software</option>
+              <option>Transport</option>
+              <option>Salaries</option>
+              <option>Utilities</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="expenseAmount">Amount</label>
+            <input type="number" id="expenseAmount" min="0" step="0.01" required />
+            <div class="field-error">Enter a valid amount.</div>
+          </div>
+          <div class="field-group">
+            <label for="expenseDate">Date</label>
+            <input type="date" id="expenseDate" required />
+          </div>
+          <div class="field-group">
+            <label for="expensePayment">Payment method</label>
+            <select id="expensePayment">
+              <option>Card</option>
+              <option>Bank Transfer</option>
+              <option>Cash</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-secondary" data-close-modal>Cancel</button>
+        <button type="submit" class="btn btn-primary">Save expense</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Invoice Preview Modal -->
+<div class="modal-overlay" id="invoicePreviewModal">
+  <div class="modal modal-wide" role="dialog" aria-modal="true" aria-labelledby="invoicePreviewTitle">
+    <div class="modal-head">
+      <h3 id="invoicePreviewTitle">Invoice preview</h3>
+      <button class="modal-close" data-close-modal><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="modal-body" id="invoicePreviewBody"></div>
+    <div class="modal-foot">
+      <button type="button" class="btn btn-secondary" data-close-modal>Close</button>
+      <button type="button" class="btn btn-primary" id="invoicePrintBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>Print</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Dialog -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal modal-sm" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="modal-body">
+      <div class="confirm-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a1.5 1.5 0 0 0 1.3 2.2h17.8a1.5 1.5 0 0 0 1.3-2.2L13.7 3.9a1.5 1.5 0 0 0-2.6 0z"/></svg>
+      </div>
+      <h3 id="confirmTitle">Delete this item?</h3>
+      <p id="confirmMessage" style="color:var(--text-muted); font-size:13px; margin-top:6px;">This action cannot be undone.</p>
+    </div>
+    <div class="modal-foot">
+      <button type="button" class="btn btn-secondary" data-close-modal>Cancel</button>
+      <button type="button" class="btn btn-danger" id="confirmActionBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
