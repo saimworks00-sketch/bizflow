@@ -86,6 +86,5 @@ python3 -m http.server
 
 ## Author
 
-**Name:** _Your Name Here_
-**GitHub:** _https://github.com/your-username_
-**Live Demo:** _https://your-demo-link-here_
+**Name:** MD SAIM MIA
+
